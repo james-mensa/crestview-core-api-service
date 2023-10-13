@@ -256,6 +256,7 @@ routes.route("/admin/updateroom/:id").patch(async (req, res) => {
 
 routes.route("/client/book/rooms/:id/:user").post(async (req, res) => {
   try {
+    console.log(req.body)
     const user_id = req.params.user;
     const room_id = req.params.id;
     const new_order = new BookingModel({
