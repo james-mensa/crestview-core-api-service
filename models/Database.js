@@ -105,7 +105,7 @@ const BookingSchema = mongoose.Schema(
     },
     client: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "user",
+      ref: "users",
     },
     customername:{
       type: String,

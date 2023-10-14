@@ -256,7 +256,7 @@ routes.route("/admin/updateroom/:id").patch(async (req, res) => {
 
 routes.route("/client/book/rooms/:id/:user").post(async (req, res) => {
   try {
-    console.log(req.body)
+    console.log(req.body);
     const user_id = req.params.user;
     const room_id = req.params.id;
     const new_order = new BookingModel({
@@ -264,7 +264,7 @@ routes.route("/client/book/rooms/:id/:user").post(async (req, res) => {
       client: user_id,
       room: room_id,
       room_id: room_id,
-      orderId:generateRandomString(4)
+      orderId: generateRandomString(4),
     });
 
     const save_book = await new_order.save();
@@ -296,7 +296,6 @@ routes.route("/client/book/rooms/:id/:user").post(async (req, res) => {
   }
 });
 
-
 routes.route("/server/all_bookings").get(async (req, res) => {
   try {
     const order = await BookingModel.find({})
@@ -308,6 +307,7 @@ routes.route("/server/all_bookings").get(async (req, res) => {
       res.status(200).json(order);
     }
   } catch (error) {
+    console.log({ error: error });
     res.status(400).json({ msg: error });
   }
 });
