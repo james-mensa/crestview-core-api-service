@@ -107,7 +107,7 @@ const BookingSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "users",
     },
-    customername:{
+    customername: {
       type: String,
     },
     room: {
@@ -121,10 +121,10 @@ const BookingSchema = mongoose.Schema(
       type: String,
     },
     from: {
-      type: String,
+      type: Date,
     },
     to: {
-      type: String,
+      type: Date,
     },
     rateme: {
       type: mongoose.Schema.Types.ObjectId,
@@ -133,8 +133,109 @@ const BookingSchema = mongoose.Schema(
     price: {
       type: Number,
     },
+    status: {
+      type: String,
+      default: "pending",
+    },
   },
-  { timestamps: true}
+  { timestamps: true }
+);
+
+const ConferenceSchema = mongoose.Schema(
+  {
+    active: {
+      type: Boolean,
+      default: false,
+    },
+    orderId: {
+      type: String,
+    },
+    paymentoption: {
+      type: String,
+    },
+    client: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "users",
+    },
+    customername: {
+      type: String,
+    },
+
+    date: {
+      type: Date,
+    },
+    equipement: [
+      {
+        type: String,
+      },
+    ],
+
+    members: {
+      type: Number,
+    },
+
+    from: {
+      type: String,
+    },
+
+    to: {
+      type: String,
+    },
+
+    price: {
+      type: Number,
+    },
+    status: {
+      type: String,
+      default: "pending",
+    },
+  },
+  { timestamps: true }
+);
+
+const RooftopSchema = mongoose.Schema(
+  {
+    active: {
+      type: Boolean,
+      default: false,
+    },
+    orderId: {
+      type: String,
+    },
+    paymentoption: {
+      type: String,
+    },
+    client: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "users",
+    },
+    customername: {
+      type: String,
+    },
+
+    date: {
+      type: String,
+    },
+    members: {
+      type: Number,
+    },
+    from: {
+      type: String,
+    },
+
+    to: {
+      type: String,
+    },
+
+    price: {
+      type: Number,
+    },
+    status: {
+      type: String,
+      default: "pending",
+    },
+  },
+  { timestamps: true }
 );
 const ratemeSchema = mongoose.Schema(
   {
@@ -173,10 +274,14 @@ const BookingModel = mongoose.model("bookings", BookingSchema);
 const RatemeModel = mongoose.model("ratings", ratemeSchema);
 const TestimonialModel = mongoose.model("testimony", Testimonial);
 const RoomTypeModel = mongoose.model("roomtype", RoomTypeSchema);
+const ConferenceModel = mongoose.model("conference", ConferenceSchema);
+const RooftopModel = mongoose.model("rooftop", RooftopSchema);
 module.exports = {
+  RooftopModel,
   RoomModel,
   BookingModel,
   RatemeModel,
   TestimonialModel,
   RoomTypeModel,
+  ConferenceModel,
 };

@@ -1,23 +1,7 @@
-    const save_book = await new_order.save();
-    if (save_book) {
-      await User.findByIdAndUpate(
-        { _id: user_id },
-        {
-          $push: {
-            bookings: save_book,
-          },
-        },
-        { new: true, useFindAndModify: false }
-      );
-      await RoomModel.findByIdAndUpate(
-        { _id: room_id },
-        {
-          $push: {
-            booking: save_book,
-          },
-        },
-        { new: true, useFindAndModify: false }
-      );
-
-      res.status(200).json(save_book);
-    }
+if (datas) {
+  
+}
+else{
+  next();
+  console.log({msg:"resss"})
+}

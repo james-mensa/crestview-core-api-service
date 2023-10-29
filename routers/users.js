@@ -6,7 +6,13 @@ require("dotenv").config();
 const routers = express.Router();
 const { User } = require("../models/users");
 const { sortArticles } = require("../middleware/utils");
-const { RegisterUser, sendOtp, ResetPass } = require("../config/gateway");
+const {
+  RegisterUser,
+  sendOtp,
+  ResetPass,
+  Contactmail,
+  ContactmailClient,
+} = require("../config/gateway");
 
 const jwt = require("jsonwebtoken");
 const { Admin } = require("../models/users");
@@ -132,6 +138,7 @@ routers.route("/signin").post(async (req, res) => {
   try {
     const email = req.body.email;
     const password = req.body.password;
+  
     const user_ac = await User.findOne({ email: email }).populate("bookings");
     if (user_ac) {
       const matchpassword = await user_ac.comparepassword(password);
@@ -146,10 +153,10 @@ routers.route("/signin").post(async (req, res) => {
     }
     if (!user_ac) {
       res.status(400).json({ msg: "user not found" });
-      console.log({user:error});
+ 
     }
   } catch (error) {
-    console.log({last:error});
+    console.log({ last: error });
     res.status(400).json({ msg: error });
   }
 });
@@ -192,7 +199,9 @@ routers.route("/modifyuser/:id").patch(async (req, res) => {
 routers.route("/suspenduser/:id").patch(async (req, res) => {
   try {
     const _id = req.params.id;
-    const user = await User.findOne({ _id });
+    console.log({_id})
+    const user = await User.findOne({ _id: _id });
+
     if (!user) {
       res.status(400).json({ msg: "user not found" });
     }
@@ -207,12 +216,12 @@ routers.route("/suspenduser/:id").patch(async (req, res) => {
         },
         { new: true }
       );
-      res.status(200).json({ msg: `${user.username}` });
 
       await Contactmail(
         user.email,
         "you violated our terms and condition.you can contact our adminstrator to recover your account"
       );
+      res.status(200).json({ msg: `Blocked` });
     }
   } catch (error) {
     res.status(400).json({ msg: error });
@@ -256,13 +265,18 @@ routers.route("/userprofile").post(async (req, res) => {
   } catch (error) {}
 });
 
-////////////////// profile0
+////////////////// Admin profile0
 routers.route("/getprofile").get(Checkuser, async (req, res) => {
   try {
     const user = await req.user;
 
     if (user !== undefined) {
-      res.status(200).json(user);
+      if(! user.role){
+        res.status(200).json(user);
+      } else if(user.role==="admin"){
+res.status(401).json({msg:"invalid"})
+      }
+   
     }
     if (user === undefined) {
       res.status(400);
@@ -272,6 +286,26 @@ routers.route("/getprofile").get(Checkuser, async (req, res) => {
   }
 });
 
+
+routers.route("/admin_auth").get(Checkuser, async (req, res) => {
+  try {
+    const user = await req.user;
+console.log({user});
+    if (user !== undefined) {
+      if(user.role==="admin"){
+        res.status(200).json(user);
+      }else{
+        res.status(401).json({msg:"invalid"})
+      }
+   
+    }
+    if (user === undefined) {
+      res.status(400);
+    }
+  } catch (error) {
+    res.status(400).json({ msg: error });
+  }
+});
 ////////////////////////////////// delete user
 
 routers.route("/deluser/:id").delete(async (req, res) => {
@@ -292,20 +326,37 @@ routers.route("/deluser/:id").delete(async (req, res) => {
 });
 
 ///////////// send user msg
-routers.route("/usermsg/:id").delete(async (req, res) => {
+routers.route("/usermsg").post(async (req, res) => {
   try {
-    const _id = req.params.id;
-    const user = await User.findByIdAndDelete(_id);
-    if (user.verified === true) {
-      await Contactmail(user.email, req.body.mesage);
-    }
+    await Contactmail(req.body.email, req.body.message);
 
-    res.status(200).json({ user });
+    res.status(200).json({ msg: "message sent" });
   } catch (error) {
     res.status(400).json({ msg: error });
   }
 });
 
+///message admin
+routers.route("/quest/msg").post(async (req, res) => {
+  try {
+    await ContactmailClient(req.body.email, req.body.message,req.body.room);
+
+    res.status(200).json({ msg: "message sent" });
+  } catch (error) {
+    res.status(400).json({ msg: error });
+  }
+});
+
+
+routers.route("/quest/refund").post(async (req, res) => {
+  try {
+    await RefundRequest(req.body.email, req.body.message,req.body.orderId);
+
+    res.status(200).json({ msg: "message sent" });
+  } catch (error) {
+    res.status(400).json({ msg: error });
+  }
+});
 /// user reset password
 
 routers.route("/userresetpass/:id").patch(async (req, res) => {

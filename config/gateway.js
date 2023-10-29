@@ -95,17 +95,19 @@ const ResetPass = async (email_user, token) => {
 /////////////////////////////////////////////
 const Contactmail = async (emails, msg) => {
   try {
-    let mailG = new Mailgen({
+    let mailG = new mailgen({
       theme: "default",
       product: {
-        name: "My Id finder",
+        name: "Rixos Hotels",
         link: `${process.env.EMAIL_MAIN_URL}`,
       },
+
     });
+
 
     const email = {
       body: {
-        intro: ["someone went a msg", `Email:${emails}`],
+        intro: ["Rixos Info"],
         outro: [`${msg}`],
       },
     };
@@ -113,10 +115,11 @@ const Contactmail = async (emails, msg) => {
     let message = {
       from: process.env.EMAIL,
       to: `${emails}`,
-      subject: "Contact message",
+      subject: "Rixos Hotel Communication",
       html: emailbody,
     };
-    await transporter.sendMail(message);
+    
+    await Transporter.sendMail(message);
     return true;
   } catch (error) {
     if (error) {
@@ -124,6 +127,79 @@ const Contactmail = async (emails, msg) => {
   }
 };
 
+
+
+
+const ContactmailClient = async (emails, msg,room) => {
+  try {
+    let mailG = new mailgen({
+      theme: "default",
+      product: {
+        name: "Customer Support",
+        link: `${process.env.EMAIL_MAIN_URL}`,
+      },
+
+    });
+
+
+    const email = {
+      body: {
+        intro: [`Quest in Room ${room} `],
+        outro: [`${msg}`],
+      },
+    };
+    let emailbody = mailG.generate(email);
+    let message = {
+      from: emails,
+      to: `${process.env.EMAIL}`,
+      subject: "Quest Enquries",
+      html: emailbody,
+    };
+    
+    await Transporter.sendMail(message);
+    return true;
+  } catch (error) {
+    if (error) {
+    }
+  }
+};
+
+
+
+
+const RefundRequest = async (emails, msg,orderid) => {
+  try {
+    let mailG = new mailgen({
+      theme: "default",
+      product: {
+        name: "Customer Support",
+        link: `${process.env.EMAIL_MAIN_URL}`,
+      },
+
+    });
+
+
+    const email = {
+      body: {
+        intro: [`RESERVATION  REFUND FOR ORDER ID ${orderid} `],
+        outro: [`${msg}`],
+      },
+    };
+    let emailbody = mailG.generate(email);
+    let message = {
+      from: emails,
+      to: `${process.env.EMAIL}`,
+      subject: "Refund Request",
+      html: emailbody,
+    };
+    
+    await Transporter.sendMail(message);
+    return true;
+  } catch (error) {
+    if (error) {
+    }
+  }
+};
 /////////send email
 const sendmail = async (contact) => {
   try {
@@ -164,6 +240,6 @@ const sendmail = async (contact) => {
 
 module.exports = {
   RegisterUser,
-
-  ResetPass
+  Contactmail,
+  ResetPass,ContactmailClient,RefundRequest
 };

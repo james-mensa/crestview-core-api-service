@@ -11,46 +11,63 @@ routers.route("/create")
 .post( async (req,res)=>{
     try {
 
-const check_user= await Admin.findOne({"email":req.body.email})
-const check_username=await Admin.findOne({"username":req.body.username})
 
-if(check_username || check_user){
-    if(check_user){
-        res.status(400).json({
 
-            msg:"email used already!!"
-        })
-    }
-    else{
-        res.status(400).json({
-
-            msg:"username taken!!"
-        })
-    }
-   
-}
-
- else if(!check_user && !check_username) {
      const user=new Admin ({
      ...req.body,
 email:req.body.email,
      
  })
 
- const save_user= await user.save()
-const gmailtoken=user.mailverify()
- const token=user.generate_token()
- await RegisterUser(save_user.email,gmailtoken)
- res.cookie("x-auth",token). json(save_user)
-
-
- }
-  
+const saveduser=await user.save();
+  res.status(200).json(saveduser);
         
     } catch (error) {
        res.status(400).json({msg:error}) 
     }
 })
+
+
+
+
+
+
+
+
+
+
+
+//sign in 
+
+
+
+
+routers.route("/auth/signin").post(async (req, res) => {
+    try {
+      const email = req.body.email;
+      const password = req.body.password;
+      console.log(email)
+      const user_ac = await Admin.findOne({ email: email })
+      if (user_ac) {
+        const matchpassword = await user_ac.comparepassword(password);
+  
+        if (matchpassword) {
+          const token = user_ac.generate_token();
+          res.cookie("authuser", token).json(user_ac);
+        }
+        if (!matchpassword) {
+          res.status(400).json({ msg: "Wrong user credentials" });
+        }
+      }
+      if (!user_ac) {
+        res.status(400).json({ msg: "user not found" });
+       
+      }
+    } catch (error) {
+      console.log({ last: error });
+    
+    }
+  });
 //////////////////////////////////////// get users 
 routers.route("/admins")
 .post( async(req,res)=>{
