@@ -266,7 +266,7 @@ routers.route("/userprofile").post(async (req, res) => {
 });
 
 ////////////////// Admin profile0
-routers.route("/getprofile").get(Checkuser, async (req, res) => {
+routers.route("/getprofile").get(Checkuser, async (req, res,next) => {
   try {
     const user = await req.user;
 
@@ -275,6 +275,7 @@ routers.route("/getprofile").get(Checkuser, async (req, res) => {
         res.status(200).json(user);
       } else if(user.role==="admin"){
 res.status(401).json({msg:"invalid"})
+next();
       }
    
     }
@@ -287,15 +288,16 @@ res.status(401).json({msg:"invalid"})
 });
 
 
-routers.route("/admin_auth").get(Checkuser, async (req, res) => {
+routers.route("/admin_auth").get(Checkuser, async (req, res,next) => {
   try {
     const user = await req.user;
-console.log({user});
+
     if (user !== undefined) {
       if(user.role==="admin"){
         res.status(200).json(user);
       }else{
         res.status(401).json({msg:"invalid"})
+        next()
       }
    
     }
