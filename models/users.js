@@ -52,6 +52,10 @@ const user_Schemas = mongoose.Schema(
 
 const Admin_schm = mongoose.Schema(
   {
+    active:{
+      type:Boolean,
+      default:true
+    },
     fullname: {
       type: String,
       min: 4,

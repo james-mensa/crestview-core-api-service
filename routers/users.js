@@ -117,6 +117,7 @@ routers.route("/alluser").get(async (req, res) => {
     res.status(400).json({ msg: error });
   }
 });
+
 ////////////GET USER//////////////////paginate
 routers.route("/getallusers").get(async (req, res, next) => {
   try {
@@ -138,9 +139,8 @@ routers.route("/signin").post(async (req, res) => {
   try {
     const email = req.body.email;
     const password = req.body.password;
-  
     const user_ac = await User.findOne({ email: email }).populate("bookings");
-    if (user_ac) {
+    if (user_ac && user_ac.active) {
       const matchpassword = await user_ac.comparepassword(password);
 
       if (matchpassword) {
@@ -153,10 +153,11 @@ routers.route("/signin").post(async (req, res) => {
     }
     if (!user_ac) {
       res.status(400).json({ msg: "user not found" });
- 
+    }
+    if (user_ac && !user_ac.active) {
+      res.status(400).json({ msg: "Permission denied" });
     }
   } catch (error) {
-    console.log({ last: error });
     res.status(400).json({ msg: error });
   }
 });
@@ -199,7 +200,7 @@ routers.route("/modifyuser/:id").patch(async (req, res) => {
 routers.route("/suspenduser/:id").patch(async (req, res) => {
   try {
     const _id = req.params.id;
-    console.log({_id})
+    console.log({ _id });
     const user = await User.findOne({ _id: _id });
 
     if (!user) {
@@ -266,18 +267,19 @@ routers.route("/userprofile").post(async (req, res) => {
 });
 
 ////////////////// Admin profile0
-routers.route("/getprofile").get(Checkuser, async (req, res,next) => {
+routers.route("/getprofile").get(Checkuser, async (req, res, next) => {
   try {
     const user = await req.user;
 
     if (user !== undefined) {
-      if(! user.role){
-        res.status(200).json(user);
-      } else if(user.role==="admin"){
-res.status(401).json({msg:"invalid"})
-next();
+      if (user.active) {
+        if (!user.role) {
+          res.status(200).json(user);
+        } else if (user.role === "admin" || user.role === "employee") {
+          res.status(401).json({ msg: "invalid" });
+          next();
+        }
       }
-   
     }
     if (user === undefined) {
       res.status(400);
@@ -287,22 +289,22 @@ next();
   }
 });
 
-
-routers.route("/admin_auth").get(Checkuser, async (req, res,next) => {
+routers.route("/admin_auth").get(Checkuser, async (req, res, next) => {
   try {
     const user = await req.user;
 
     if (user !== undefined) {
-      if(user.role==="admin"){
+      if (user.role === "admin" || user.role === "employee") {
         res.status(200).json(user);
-      }else{
-        res.status(401).json({msg:"invalid"})
-        next()
+      } else {
+        res.status(401).json({ msg: "invalid" });
+        next();
       }
-   
     }
     if (user === undefined) {
-      res.status(400);
+      console.log({user:"ooo"})
+
+      next();
     }
   } catch (error) {
     res.status(400).json({ msg: error });
@@ -341,7 +343,7 @@ routers.route("/usermsg").post(async (req, res) => {
 ///message admin
 routers.route("/quest/msg").post(async (req, res) => {
   try {
-    await ContactmailClient(req.body.email, req.body.message,req.body.room);
+    await ContactmailClient(req.body.email, req.body.message, req.body.room);
 
     res.status(200).json({ msg: "message sent" });
   } catch (error) {
@@ -349,10 +351,9 @@ routers.route("/quest/msg").post(async (req, res) => {
   }
 });
 
-
 routers.route("/quest/refund").post(async (req, res) => {
   try {
-    await RefundRequest(req.body.email, req.body.message,req.body.orderId);
+    await RefundRequest(req.body.email, req.body.message, req.body.orderId);
 
     res.status(200).json({ msg: "message sent" });
   } catch (error) {
