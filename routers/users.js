@@ -200,7 +200,7 @@ routers.route("/modifyuser/:id").patch(async (req, res) => {
 routers.route("/suspenduser/:id").patch(async (req, res) => {
   try {
     const _id = req.params.id;
-    console.log({ _id });
+   
     const user = await User.findOne({ _id: _id });
 
     if (!user) {
@@ -270,7 +270,7 @@ routers.route("/userprofile").post(async (req, res) => {
 routers.route("/getprofile").get(Checkuser, async (req, res, next) => {
   try {
     const user = await req.user;
-console.log({user:user})
+
     if (user !== undefined) {
       if (user.active) {
         if (!user.role) {
@@ -302,7 +302,7 @@ routers.route("/admin_auth").get(Checkuser, async (req, res, next) => {
       }
     }
     if (user === undefined) {
-      console.log({user:"ooo"})
+   
 
       next();
     }
@@ -316,7 +316,7 @@ routers.route("/deluser/:id").delete(async (req, res) => {
   try {
     const _id = req.params.id;
     const user = await User.findByIdAndDelete(_id);
-console.log({userss:user})
+
     if (user) {
       await Contactmail(
         user.email,

@@ -217,7 +217,6 @@ routes
         });
 
         res.status(200).json(availableroom);
-        //       console.log(availableroom);
       } else {
         res.status(400).json({ msg: "room not found" });
       }
@@ -279,12 +278,14 @@ routes.route("/client/book/rooms/:id/:user").post(async (req, res) => {
 
     const save_book = await new_order.save();
     if (save_book) {
-      const userdata=await User.findById(   { _id: user_id })
-if(userdata) {
-  await Contactmail(userdata.email,
-    `Congratulations,Payment successful for Order ID : ${save_book.orderId} room number ${save_book.room_number}, check In date is ${save_book.from}.Thank you for choosing Rixos hotel.Enjoy`)
-}
-    
+      const userdata = await User.findById({ _id: user_id });
+      if (userdata) {
+        await Contactmail(
+          userdata.email,
+          `Congratulations,Payment successful for Order ID : ${save_book.orderId} room number ${save_book.room_number}, check In date is ${save_book.from}.Thank you for choosing Rixos hotel.Enjoy`
+        );
+      }
+
       await User.findByIdAndUpdate(
         { _id: user_id },
         {
@@ -323,16 +324,16 @@ routes
       const conferences = await ConferenceModel.find({});
 
       conferences.forEach((element) => {
-      
-        if (format(element.date,"eee dd MMM yyyy")===format(new Date(date),"eee dd MMM yyyy")) {
+        if (
+          format(element.date, "eee dd MMM yyyy") ===
+          format(new Date(date), "eee dd MMM yyyy")
+        ) {
           if (isTimeBetween(element.from, element.to, startTime)) {
             available = true;
           }
-
         }
       });
       res.status(200).json({ msg: available });
-     
     } catch (error) {
       res.status(400).json({ msg: error });
       console.log(error);
@@ -342,26 +343,26 @@ routes
 
 routes.route("/client/book/conference/:user").post(async (req, res) => {
   try {
-    
     const user_id = req.params.user;
-
 
     const new_order = new ConferenceModel({
       ...req.body,
       client: user_id,
-      date:new Date(req.body.date),
+      date: new Date(req.body.date),
       orderId: generateRandomString(5),
     });
 
     const save_book = await new_order.save();
 
     if (save_book) {
-const userdata=await User.findById(   { _id: user_id })
-if(userdata) {
-  await Contactmail(userdata.email,
-    `Congratulations,Payment successful for Order ID : ${save_book.orderId} .  check In date is ${save_book.date} from ${save_book.from} to ${save_book.to} .Thank you for choosing Rixos hotel.Enjoy`)
-}
-     
+      const userdata = await User.findById({ _id: user_id });
+      if (userdata) {
+        await Contactmail(
+          userdata.email,
+          `Congratulations,Payment successful for Order ID : ${save_book.orderId} .  check In date is ${save_book.date} from ${save_book.from} to ${save_book.to} .Thank you for choosing Rixos hotel.Enjoy`
+        );
+      }
+
       await User.findByIdAndUpdate(
         { _id: user_id },
         {
@@ -373,11 +374,9 @@ if(userdata) {
       );
 
       res.status(200).json(save_book);
-      console.log(save_book);
     }
   } catch (error) {
     res.status(400).json({ msg: error });
-    console.log(error);
   }
 });
 
@@ -393,7 +392,6 @@ routes.route("/server/conference_bookings").get(async (req, res) => {
       res.status(200).json({ order, TotalRevenue });
     }
   } catch (error) {
-    console.log({ error: error });
     res.status(400).json({ msg: error });
   }
 });
@@ -579,8 +577,8 @@ routes.route("/server/booking/statistics/:year").get(async (req, res) => {
         pendingOrder: 0,
         checkedIn: 0,
         totalRevenue: 0,
-        Mtnmomopayment:0,
-        cardpayment:0
+        Mtnmomopayment: 0,
+        cardpayment: 0,
       },
     ];
     if (order) {
@@ -589,10 +587,10 @@ routes.route("/server/booking/statistics/:year").get(async (req, res) => {
         const orderYear = newdate.getFullYear();
         const monthZeroBased = newdate.getMonth();
         const monthOneBased = monthZeroBased + 1;
-        console.log({p:data.paymentoption})
-        if(data.paymentoption==="Mtn Mobile Money (momo)"){
+
+        if (data.paymentoption === "Mtn Mobile Money (momo)") {
           statDate[12].Mtnmomopayment = statDate[12].Mtnmomopayment + 1;
-        }else{
+        } else {
           statDate[12].cardpayment = statDate[12].cardpayment + 1;
         }
         if (orderYear === parseInt(targetY)) {
@@ -654,7 +652,6 @@ routes.route("/server/booking/statistics/:year").get(async (req, res) => {
       });
 
       res.status(200).json(statDate);
-     
     }
   } catch (error) {
     res.status(400).json({ msg: error });
@@ -664,23 +661,21 @@ routes.route("/server/booking/statistics/:year").get(async (req, res) => {
 /// filter bookings
 routes
   .route(
-    "/server/bookings/filter/:type/:room_no/:customer/:order_id/:startdate/:enddate"
+    "/server/bookings/filter/:room_no/:customer/:order_id/:startdate/:enddate"
   )
   .get(async (req, res, next) => {
     try {
-      console.log("loading");
       const startdate = req.params.startdate;
       const enddate = req.params.enddate;
-      const roomType = req.params.type;
       const room_no = req.params.room_no;
       const customername = req.params.customer;
       const order_id = req.params.order_id;
       const newstartdate = new Date(startdate);
       const newenddate = new Date(enddate);
-      console.log(newstartdate);
+
       let filter = {
-        from: { $gt: newstartdate },
-        to: { $lt: newenddate },
+        createdAt: { $gt: new Date(newstartdate),
+        $lt:new Date(newenddate) },
       };
 
       let TotalRevenue = 0;
@@ -711,7 +706,8 @@ routes
         customername !== "null" &&
         order_id === "null"
       ) {
-        (filter.customername = customername), (filter.room_number = room_no);
+        filter.customername = customername;
+        filter.room_number = room_no;
       } else if (
         room_no !== "null" &&
         customername === "null" &&
@@ -724,7 +720,6 @@ routes
         order_id !== "null"
       ) {
         filter.orderId = order_id;
-
         filter.room_number = room_no;
       } else if (
         room_no === "null" &&
@@ -733,12 +728,9 @@ routes
       ) {
         filter.customername = customername;
       }
-
-      const order = await BookingModel.find(filter)
-        .populate("client")
-        .populate("room")
-        .populate("rateme");
-      console.log({ order: order });
+      console.log({ log: filter });
+      const order = await BookingModel.find(filter).populate("client").populate("room").populate("rateme");
+      console.log(order)
       if (order) {
         order.forEach((data) => {
           TotalRevenue = TotalRevenue + data.price;
@@ -810,8 +802,8 @@ routes.route("/server/conference/statistics/:year").get(async (req, res) => {
         pendingOrder: 0,
         checkedIn: 0,
         totalRevenue: 0,
-        Mtnmomopayment:0,
-        cardpayment:0
+        Mtnmomopayment: 0,
+        cardpayment: 0,
       },
     ];
     if (order) {
@@ -819,15 +811,15 @@ routes.route("/server/conference/statistics/:year").get(async (req, res) => {
         let newdate = new Date(data.date);
         const orderYear = newdate.getFullYear();
         const monthZeroBased = newdate.getMonth();
-        const DayName=newdate.getDay();
-        
+        const DayName = newdate.getDay();
+
         const monthOneBased = monthZeroBased + 1;
-        console.log({p:data.paymentoption})
-if(data.paymentoption==="Mtn Mobile Money (momo)"){
-  statDate[12].Mtnmomopayment = statDate[12].Mtnmomopayment + 1;
-}else{
-  statDate[12].cardpayment = statDate[12].cardpayment + 1;
-}
+
+        if (data.paymentoption === "Mtn Mobile Money (momo)") {
+          statDate[12].Mtnmomopayment = statDate[12].Mtnmomopayment + 1;
+        } else {
+          statDate[12].cardpayment = statDate[12].cardpayment + 1;
+        }
         if (orderYear === parseInt(targetY)) {
           statDate[12].totalRevenue = statDate[12].totalRevenue + data.price;
           if (data.status === "pending") {
@@ -887,7 +879,6 @@ if(data.paymentoption==="Mtn Mobile Money (momo)"){
       });
 
       res.status(200).json(statDate);
-     
     }
   } catch (error) {
     res.status(400).json({ msg: error });
@@ -900,17 +891,15 @@ routes
   .route("/server/conference/filter/:customer/:order_id/:startdate/:enddate")
   .get(async (req, res, next) => {
     try {
-      
       const startdate = req.params.startdate;
       const enddate = req.params.enddate;
       const customername = req.params.customer;
       const order_id = req.params.order_id;
       const newstartdate = new Date(startdate);
       const newenddate = new Date(enddate);
-    
+
       let filter = {
         date: { $gt: new Date(newstartdate) },
-       
       };
 
       let TotalRevenue = 0;
@@ -923,10 +912,9 @@ routes
       } else if (customername !== "null" && order_id == "null") {
         filter.customername = customername;
       }
-    
+
       const order = await ConferenceModel.find(filter).populate("client");
-      console.log(order.length)
-     
+
       if (order) {
         order.forEach((data) => {
           TotalRevenue = TotalRevenue + data.price;

@@ -17,7 +17,8 @@ routers.route("/adminstrator/newaccount/:id").post(async (req, res) => {
 
     if (admin && admin.role === "admin") {
       const exitAccount = await Admin.find({ email: req.body.email });
-      if (!exitAccount) {
+
+      if (exitAccount && exitAccount.length === 0) {
         const user = new Admin({
           ...req.body,
           email: req.body.email,
@@ -45,7 +46,7 @@ routers.route("/auth/signin").post(async (req, res) => {
   try {
     const email = req.body.email;
     const password = req.body.password;
-    console.log(email);
+  
     const user_ac = await Admin.findOne({ email: email });
     if (user_ac) {
       const matchpassword = await user_ac.comparepassword(password);
@@ -62,10 +63,19 @@ routers.route("/auth/signin").post(async (req, res) => {
       res.status(400).json({ msg: "user not found" });
     }
   } catch (error) {
-    console.log({ last: error });
+
   }
 });
 
+routers.route("/auth/signout").post(async (req, res, next) => {
+  try {
+    res.status(200).clearCookie("authuser");
+
+    next();
+  } catch (error) {
+   
+  }
+});
 routers.route("/adminstrator/accounts/:id").get(async (req, res) => {
   try {
     const admin = await Admin.findById({ _id: req.params.id });
@@ -81,7 +91,7 @@ routers.route("/adminstrator/accounts/:id").get(async (req, res) => {
     }
   } catch (error) {
     res.status(400).json({ msg: error });
-    console.log(error);
+  
   }
 });
 
