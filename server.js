@@ -21,24 +21,26 @@ app.use("/admin",Admin)
 app.use("/user",users)
 app.use("/session",query)
 
-const DBconnect =async () => {
-    try {
-        mongoose.connect(MongoUrl) 
-        console.log('Mongo connected')
-    } catch(error) { 
-        console.log(error)
-        process.exit()
-    }
-}
-DBconnect()
+// const DBconnect =async () => {
+//     try {
+//         mongoose.connect(MongoUrl) 
+//         console.log('Mongo connected')
+//     } catch(error) { 
+//         console.log(error)
+//         process.exit()
+//     }
+// }
+
 
 
 app.listen(PORT,(er,res)=>{
     if(er){
         console.log("express not connected")
     }
+    else  { 
+        // DBconnect()
         console.log(`express server running on ${PORT} `)
-    
+    }
 })
 
 // app.use(express.static("client/build"));

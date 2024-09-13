@@ -1,6 +1,5 @@
 const bcryt = require("bcrypt");
 const mongoose = require("mongoose");
-const aggregatePaginate = require("mongoose-aggregate-paginate-v2");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
