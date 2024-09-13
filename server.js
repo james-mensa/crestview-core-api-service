@@ -5,7 +5,6 @@ require("dotenv").config()
 const bodyParser=require("body-parser")
 const cookieParser=require("cookie-parser")
 const PORT=process.env.PORT || 3003
-const path=require("path")
 const cors=require('cors');
 const MongoUrl=`mongodb+srv://rixoshotels:${process.env.DB_PASS}@cluster0.re47ble.mongodb.net/?retryWrites=true&w=majority`
 const Admin=require("./routers/Admin")
@@ -24,11 +23,10 @@ app.use("/session",query)
 
 const DBconnect =async () => {
     try {
-     
-        mongoose.set('strictQuery', false)
         mongoose.connect(MongoUrl) 
         console.log('Mongo connected')
     } catch(error) { 
+        console.log(error)
         process.exit()
     }
 }
