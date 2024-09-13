@@ -4,7 +4,7 @@ const app=express()
 require("dotenv").config()
 const bodyParser=require("body-parser")
 const cookieParser=require("cookie-parser")
-const PORT=process.env.PORT ||3003
+const PORT=process.env.PORT || 3003
 const path=require("path")
 const cors=require('cors');
 const MongoUrl=`mongodb+srv://rixoshotels:${process.env.DB_PASS}@cluster0.re47ble.mongodb.net/?retryWrites=true&w=majority`
@@ -43,15 +43,15 @@ app.listen(PORT,(er,res)=>{
     
 })
 
-app.use(express.static("client/build"));
+// app.use(express.static("client/build"));
 
-if(process.env.NODE_ENV==="production"){
-    const path=require("path");
-    app.get("*",(req,res)=>{
-        res.sendFile(path.resolve(__dirname,"client","build","index.html"));
+// if(process.env.NODE_ENV==="production"){
+//     const path=require("path");
+//     app.get("*",(req,res)=>{
+//         res.sendFile(path.resolve(__dirname,"client","build","index.html"));
 
-    });
+//     });
 
-}
+// }
 
 
