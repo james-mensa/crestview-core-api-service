@@ -1,25 +1,17 @@
-const express = require("express");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
-const axios = require("axios");
 const { User } = require("../models/users");
 const { Admin } = require("../models/users");
 
-exports.checkToken = async (req, res, next) => {
+exports.AuthSession = async (req, res, next) => {
   try {
-    let checker = req.cookies.authuser;
-
+    let checker = req.cookies["refreshToken"];
     if (checker) {
-      
       const datas = jwt.verify(
         checker,
         process.env.DB_SECRET,
         async function (err, decoded) {
-          if (err) {
-          
-          } // Manage different errors here (Expired, untrusted...)
-          if (decoded) {
-           
+          if (decoded) { 
             const user = await User.findOne({ _id: decoded._id })
               .populate({
                 path: "bookings",
@@ -47,7 +39,7 @@ exports.checkToken = async (req, res, next) => {
   }
 };
 
-exports.Checkuser = async (req, res, next) => {
+exports.isAuthorized = async (req, res, next) => {
   const user = res.locals.userData;
   req.user = user;
   next();

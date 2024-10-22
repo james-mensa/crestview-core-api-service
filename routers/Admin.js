@@ -9,7 +9,7 @@ const {
 } = require("../config/gateway");
 
 const { User } = require("../models/users");
-const { Checkuser } = require("../middleware/auth");
+const { isAuthorized } = require("../middleware/auth");
 
 routers.route("/adminstrator/newaccount/:id").post(async (req, res) => {
   try {
@@ -221,7 +221,7 @@ routers.route("/admin/:id").delete(async (req, res) => {
   }
 });
 
-routers.route("/profile").post(Checkuser, async (req, res) => {
+routers.route("/profile").post(isAuthorized, async (req, res) => {
   try {
     const user = await Admin.findById(req.user._id);
 

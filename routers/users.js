@@ -1,6 +1,5 @@
 const express = require("express");
-const { route } = require("express/lib/application");
-const { Checkuser, checkToken, GetGeo } = require("../middleware/auth");
+const {isAuthorized } = require("../middleware/auth");
 const {} = require("../models/users");
 require("dotenv").config();
 const routers = express.Router();
@@ -267,7 +266,7 @@ routers.route("/userprofile").post(async (req, res) => {
 });
 
 ////////////////// Admin profile0
-routers.route("/getprofile").get(Checkuser, async (req, res, next) => {
+routers.route("/getprofile").get(isAuthorized, async (req, res, next) => {
   try {
     const user = await req.user;
 
@@ -289,7 +288,7 @@ routers.route("/getprofile").get(Checkuser, async (req, res, next) => {
   }
 });
 
-routers.route("/admin_auth").get(Checkuser, async (req, res, next) => {
+routers.route("/admin_auth").get(isAuthorized, async (req, res, next) => {
   try {
     const user = await req.user;
 

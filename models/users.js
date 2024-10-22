@@ -20,6 +20,13 @@ const user_Schemas = mongoose.Schema(
     password: {
       type: String,
     },
+    profile:{
+      type:String
+    },
+    isSocialAuth:{
+      type: Boolean,
+      default: false
+    },
 
     bookings: [
       {

@@ -1,43 +1,41 @@
-require("dotenv").config();
 const mailgen = require("mailgen");
 const nodemailer = require("nodemailer");
+const { appConfig } = require("../lib/types");
 
 
 const Transporter = nodemailer.createTransport({
   service: "gmail",
   secure: true,
   auth: {
-    user: process.env.EMAIL,
-    pass: process.env.EMAIL_PASS,
+    user: appConfig.googleEmail,
+    pass: appConfig.googleAppPassword,
   },
 });
 
 const RegisterUser = async (user, userEmail, token) => {
+
   try {
     const MAILGEN = new mailgen({
       theme: "default",
       product: {
-        name: "BaduTech",
+        name: "Crestview Lodge",
         link: `${process.env.SITE_DOMAIN}`,
       },
     });
-
     const emailbody = {
       body: {
         name: user,
-        intro: "Welcome to myIdfinder We're very excited to have you here.",
+        intro: "Please verify your email",
         action: {
-          instructions: "Please click below to verify your account and Enjoy",
+          instructions: "Tap the button below to confirm your email address. If you didn't create an account with Crestview Lodge, you can safely delete this email.",
           button: {
             color: "#22BC66", // Optional action button color
-            text: "Confirm your account",
-            link: `${process.env.SITE_DOMAIN}account/verification/?t=${token}`,
+            text: "Confirm Account",
+            link: `${process.env.SITE_DOMAIN}/auth/verification/?t=${token}`,
           },
         },
-        outro: "Need help  ?.",
       },
     };
-
     const msg = MAILGEN.generate(emailbody);
     let message = {
       from: process.env.EMAIL,
@@ -46,7 +44,15 @@ const RegisterUser = async (user, userEmail, token) => {
       html: msg,
     };
 
-    await Transporter.sendMail(message);
+    const res=await Transporter.sendMail(message,(err,info)=>{
+      if(err){
+        console.log({message:err})
+      }
+      if(info){
+        console.log({messageInfo:info})
+      }
+    });
+    console.log("send mail-",res)
     return true;
   } catch (error) {
     

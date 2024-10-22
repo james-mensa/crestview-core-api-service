@@ -1,0 +1,123 @@
+{
+    "colorBackground": false,
+    "datasource": {
+      "type": "prometheus",
+      "uid": "zkrypto_prometheus"
+    },
+    "fieldConfig": {
+      "defaults": {
+        "color": {
+          "mode": "palette-classic"
+        },
+        "custom": {
+          "axisLabel": "Temperature (°C)",
+          "axisPlacement": "left",
+          "barAlignment": 0.5,
+          "drawStyle": "line",
+          "fillOpacity": 20,
+          "gradientMode": "opacity",
+          "hideFrom": {
+            "legend": false,
+            "tooltip": false,
+            "viz": false
+          },
+          "lineInterpolation": "smooth",
+          "lineWidth": 2,
+          "pointSize": 3,
+          "scaleDistribution": {
+            "type": "linear"
+          },
+          "showPoints": "always",
+          "spanNulls": true,
+          "stacking": {
+            "group": "A",
+            "mode": "none"
+          },
+          "thresholdsStyle": {
+            "mode": "off"
+          }
+        },
+        "mappings": [],
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "blue"
+            },
+            {
+              "color": "yellow",
+              "value": 50
+            },
+            {
+              "color": "orange",
+              "value": 70
+            },
+            {
+              "color": "red",
+              "value": 85
+            }
+          ]
+        },
+        "unit": "celsius"
+      },
+      "overrides": [
+        {
+          "matcher": {
+            "id": "byName",
+            "options": "Critical Temperature"
+          },
+          "properties": [
+            {
+              "id": "custom.lineWidth",
+              "value": 3
+            },
+            {
+              "id": "color",
+              "value": {
+                "fixedColor": "dark-red",
+                "mode": "fixed"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "gridPos": {
+      "h": 20,
+      "w": 24,
+      "x": 0,
+      "y": 35
+    },
+    "id": 2,
+    "options": {
+      "legend": {
+        "calcs": [
+          "max",
+          "mean",
+          "min",
+          "last"
+        ],
+        "displayMode": "table",
+        "placement": "bottom",
+        "showLegend": true,
+        "unit": "celsius"
+      },
+      "tooltip": {
+        "mode": "all",
+        "sort": "asc"
+      }
+    },
+    "targets": [
+      {
+        "exemplar": true,
+        "expr": "node_hwmon_temp_celsius{job=\"$host\"} > 0",
+        "instant": false,
+        "interval": "",
+        "intervalFactor": 3,
+        "legendFormat": "{{chip}}-{{sensor}}",
+        "refId": "A"
+      }
+    ],
+    "title": "System Temperature",
+    "type": "timeseries"
+  },

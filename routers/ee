@@ -1,7 +1,0 @@
-if (datas) {
-  
-}
-else{
-  next();
-  console.log({msg:"resss"})
-}
