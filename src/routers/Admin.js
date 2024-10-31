@@ -1,15 +1,10 @@
 const express = require("express");
 const routers = express.Router();
 const { Admin } = require("../models/users");
-const {
-  RegisterUser,
-  sendOtp,
-  ResetPass,
-  Contactmail,
-} = require("../config/gateway");
 
 const { User } = require("../models/users");
 const { isAuthorized } = require("../middleware/auth");
+const { Contactmail } = require("../services/email.service");
 
 routers.route("/adminstrator/newaccount/:id").post(async (req, res) => {
   try {

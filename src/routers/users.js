@@ -5,18 +5,10 @@ require("dotenv").config();
 const routers = express.Router();
 const { User } = require("../models/users");
 const { sortArticles } = require("../middleware/utils");
-const {
-  RegisterUser,
-  sendOtp,
-  ResetPass,
-  Contactmail,
-  ContactmailClient,
-} = require("../config/gateway");
-
 const jwt = require("jsonwebtoken");
 const { Admin } = require("../models/users");
 const bcryt = require("bcrypt");
-const { CardModel } = require("../models/Database");
+const { Contactmail } = require("../services/email.service");
 /////////////////////////////////////////////// create new user
 
 routers.route("/preregister").post(async (req, res) => {

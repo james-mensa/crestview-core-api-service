@@ -1,11 +1,11 @@
 {
   "name": "cyberu",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "init.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
-    "server": "nodemon run server.js",
+    "start": "node init.js",
+    "server": "nodemon run init.js",
     "client": "npm start --prefix client",
     "build": "npm i",
     "app": "concurrently \" npm run client \" \" npm run server\"",

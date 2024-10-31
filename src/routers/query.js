@@ -17,7 +17,7 @@ const {
 } = require("../middleware/utils");
 const express = require("express");
 const { User } = require("../models/users");
-const { Contactmail } = require("../config/gateway");
+const { Contactmail } = require("../services/email.service");
 const routes = express.Router();
 /** creation */
 

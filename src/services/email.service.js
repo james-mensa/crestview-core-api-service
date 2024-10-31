@@ -1,6 +1,7 @@
 const mailgen = require("mailgen");
 const nodemailer = require("nodemailer");
-const { appConfig } = require("../lib/types");
+const appConfig = require("../config/appConfig");
+
 
 
 const Transporter = nodemailer.createTransport({
@@ -98,7 +99,7 @@ const ResetPass = async (email_user, token) => {
     
   }
 };
-/////////////////////////////////////////////
+
 const Contactmail = async (emails, msg) => {
   try {
     let mailG = new mailgen({
@@ -206,7 +207,7 @@ const RefundRequest = async (emails, msg,orderid) => {
     }
   }
 };
-/////////send email
+
 const sendmail = async (contact) => {
   try {
     let mailG = new Mailgen({

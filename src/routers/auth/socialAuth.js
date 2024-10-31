@@ -3,8 +3,10 @@ const routers = express.Router();
 const  axios =require("axios");
 const { User } = require("../../models/users");
 const { generateTimeBasedString, normalizeAndConcatenate } = require("../../lib/common");
-const { configs } = require("../../lib/types");
+const { appConfig } = require("../../config/appConfig");
 const GOOGLE_AUTH_LINK="https://www.googleapis.com/oauth2/v1/userinfo"
+
+
 // GET /api/google/callback
 routers.route("/google").post(async (req, res) => {
     try {
@@ -33,12 +35,11 @@ routers.route("/google").post(async (req, res) => {
               const newUser = new User(_user);
               await newUser.save();
               const token = newUser.generate_token();
-              res.cookie(configs.accessToken, token, { httpOnly: true, secure: true }).json(newUser);
+              res.cookie(appConfig.accessToken, token, { httpOnly: true, secure: true }).json(newUser);
               }else{
               const refreshToken = user.generate_token();
-              console.log({secure:configs.environment})
               res.cookie(
-                'refreshToken', 
+                `${appConfig.refreshToken}`, 
                 refreshToken, 
                 { 
                   httpOnly: true,

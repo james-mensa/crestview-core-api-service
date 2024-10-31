@@ -1,9 +1,9 @@
 const express = require("express");
 const { UserModel } = require("../../models");
-const { RegisterUser } = require("../../config/gateway");
 const { generateTimeBasedString } = require("../../lib/common");
 const routers = express.Router();
 const jwt = require("jsonwebtoken");
+const { RegisterUser } = require("../../services/email.service");
 
 
 routers.route("/init").get(async (req, res) => {
