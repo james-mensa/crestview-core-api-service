@@ -19,7 +19,7 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3003;
-const allowedOrigins = ['http://localhost:3000', 'https://rixoscomfort.netlify.app/'];
+const allowedOrigins = ['http://localhost:3000', 'https://rixoscomfort.netlify.app'];
 
 app.use(cors({
   origin: (origin, callback) => {
