@@ -41,9 +41,9 @@ routers.route("/google").post(async (req, res) => {
               res.cookie(
                 `${appConfig.refreshToken}`, 
                 refreshToken, 
-                { 
+                {
                   httpOnly: true,
-                  secure: process.env.NODE_ENV === 'production',
+                  secure: true,
                   sameSite: 'none',
                 }
               );
