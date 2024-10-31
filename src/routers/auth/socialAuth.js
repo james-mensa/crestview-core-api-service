@@ -43,8 +43,9 @@ routers.route("/google").post(async (req, res) => {
                 refreshToken, 
                 {
                   httpOnly: true,
-                  secure: true,
-                  sameSite: 'none',
+                  secure: process.env.NODE_ENV === 'production',
+                  sameSite: 'None', 
+                  domain: 'https://rixoshotels.onrender.com'
                 }
               );
               return res.json(user);
