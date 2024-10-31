@@ -44,7 +44,7 @@ routers.route("/google").post(async (req, res) => {
                 { 
                   httpOnly: true,
                   secure: process.env.NODE_ENV === 'production',
-                  sameSite: 'strict',
+                  sameSite: 'none',
                 }
               );
               return res.json(user);
