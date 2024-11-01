@@ -10,9 +10,8 @@ const user_Schemas = mongoose.Schema(
       min: 4,
       max: 15,
     },
-    username: {
+    alias: {
       type: String,
-      default: "user",
     },
     email: {
       type: String,
@@ -20,7 +19,7 @@ const user_Schemas = mongoose.Schema(
     password: {
       type: String,
     },
-    profile:{
+    picture:{
       type:String
     },
     isSocialAuth:{

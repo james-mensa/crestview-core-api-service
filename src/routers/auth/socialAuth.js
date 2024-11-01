@@ -2,7 +2,7 @@ const express = require("express");
 const routers = express.Router();
 const  axios =require("axios");
 const { User } = require("../../models/users");
-const { generateTimeBasedString, normalizeAndConcatenate } = require("../../lib/common");
+const { generateTimeBasedString, normalizeAndConcatenate, getInitials } = require("../../lib/common");
 const { appConfig } = require("../../config/appConfig");
 const GOOGLE_AUTH_LINK="https://www.googleapis.com/oauth2/v1/userinfo"
 
@@ -20,6 +20,7 @@ routers.route("/google").post(async (req, res) => {
       })
       if(authResponse){
               const client=authResponse.data;
+              console.log({client})
               const user = await User.findOne({ email: client.email});
               if(!user){
               const _generatedString=generateTimeBasedString();
@@ -30,6 +31,8 @@ routers.route("/google").post(async (req, res) => {
                 username:_userName,
                 email: client.email,
                 password:"",
+                picture:client.picture,
+                alias:getInitials(client.name),
                 isSocialAuth:true
               }
               const newUser = new User(_user);
