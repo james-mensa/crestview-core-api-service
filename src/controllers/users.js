@@ -9,7 +9,6 @@ const jwt = require("jsonwebtoken");
 const { Admin } = require("../models/users");
 const bcryt = require("bcrypt");
 const { Contactmail } = require("../services/email.service");
-/////////////////////////////////////////////// create new user
 
 routers.route("/preregister").post(async (req, res) => {
   try {
@@ -91,7 +90,9 @@ routers.route("/authenticateme").post(async (req, res) => {
     res.status(400).json({ msg: error });
   }
 });
+
 //////////////////////////////////////// get users
+
 routers.route("/alluser").get(async (req, res) => {
   try {
     const allusers = await User.find({})

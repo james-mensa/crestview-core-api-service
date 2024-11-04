@@ -1,0 +1,56 @@
+{
+  "compilerOptions": {
+    /* Basic Options */
+    "target": "ES2020",                        
+    "module": "CommonJS",                       
+    "lib": ["ES2020"],                         
+    "moduleResolution": "node",                 
+    "allowSyntheticDefaultImports": true,       
+    "esModuleInterop": true,                    
+    "resolveJsonModule": true,                 
+
+    /* Type Checking */
+    "strict": true,                             
+    "strictNullChecks": true,                   
+    "strictFunctionTypes": true,              
+    "strictBindCallApply": true,                
+    "noImplicitAny": true,                     
+    "noImplicitThis": true,                     
+    "alwaysStrict": true,                       
+    "skipLibCheck": true,                       
+
+    /* Code Quality & Readability */
+    "noUnusedLocals": true,                     
+    "noUnusedParameters": true,                 
+    "noFallthroughCasesInSwitch": true,        
+    "noImplicitReturns": true,                  
+    /* Module and Path Management */
+    "baseUrl": "./",                            
+    "paths": {
+      "@config/*": ["src/config/*"],            
+      "@controllers/*": ["src/controllers/*"], 
+      "@models/*": ["src/db/schema/*"],           
+      "@services/*": ["src/services/*"],
+      "@type/*": ["src/types/*"],
+    },
+    "rootDir": "./src",                         
+    "outDir": "./dist",                        
+    "declaration": true,                       
+
+    /* Source Maps */
+    "sourceMap": true,                          
+    "inlineSources": true,                   
+    "inlineSourceMap": false,                
+
+    /* Experimental Features */
+    "experimentalDecorators": true,            
+    "emitDecoratorMetadata": true             
+  },
+  "include": [
+    "src/**/*.ts"                               
+  ],
+  "exclude": [
+    "node_modules",                            
+    "dist"                                  
+  ]
+}

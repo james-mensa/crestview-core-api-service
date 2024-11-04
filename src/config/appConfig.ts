@@ -12,6 +12,7 @@ const configs={
     googleEmail:process.env.GOOGLE_EMAIL_CLIENT,
     googleAppPassword:process.env.GOOGLE_EMAIL_APP_PASSWORD,
     baseMongoDBURL: ENV==='development' ? LOCAL_MONGODB_URL :REMOTE_MONGODB_URL,
+    db_scret:process.env.DB_SECRET
 
     // apiUrl:process.API_URL,
     // clientId:process.CLIENT_ID,
@@ -21,6 +22,6 @@ const configs={
 
 
 
-module.exports ={
-    appConfig:configs,
+export  {
+    configs as appConfig,
 }
