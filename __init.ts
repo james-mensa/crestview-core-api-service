@@ -1,13 +1,22 @@
+// server.js
 import { CorsOptions } from 'cors';
 import express, { Request, Response } from "express";
 import  dotenv  from 'dotenv';
 import cors  from 'cors';
-import mongoose from "mongoose";
-import bodyParser from "body-parser";
-import cookieParser  from "cookie-parser";
-import { appConfig } from './src/config/appConfig';
-import {AuthRouter, healthRouter} from "./src/routes"
-import { initializeSchemas } from './src/db/index';
+import { AdminModel } from "./src/db";
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+const cookieParser = require('cookie-parser');
+// const cors = require('cors');
+// const dotenv = require("dotenv");
+
+
+const authService = require("./src/routers/auth/socialAuth");
+const tokenizedAuthService = require("./src/routers/auth/tokenizedAuth");
+const health=require("./src/routers/health")
+const { AuthSession } = require("./src/middleware/auth");
+const { appConfig } = require("./src/config/appConfig");
+
 dotenv.config();
 
 
@@ -31,11 +40,13 @@ app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(AuthSession);
 
+// Routes
+app.use(health);
 app.get('/', (_: Request, res: Response) =>{ res.status(200).send({message:"Crestview core service"});});
-
-app.use("/api/auth", AuthRouter);
-app.use(healthRouter);
+app.use("/admin", AdminModel);
+// app.use("/user", users);
 // app.use("/session", query);
 // app.use("/api/auth", authService);
 // app.use("/api/auth", tokenizedAuthService);
@@ -43,9 +54,8 @@ app.use(healthRouter);
 // Database Connection
 const DBconnect = async () => {
   try {
-    await mongoose.connect(appConfig.baseMongoDBURL??'');
+    await mongoose.connect(appConfig.baseMongoDBURL);
     console.log('MongoDB connected');
-    initializeSchemas();
   } catch (error) {
     console.error('Database connection error:', error);
     process.exit(1);

@@ -2,7 +2,7 @@ import { Schema, model } from "mongoose";
 import { IBooking, PaymentMethods } from "../types/schema.interface";
 
 
-const BookingSchema = new Schema(
+const BookingSchema = new Schema<IBooking>(
   {
     paymentMethod: {
       type: String,
@@ -68,4 +68,4 @@ export default BookingSchema;
 
 
 
-export const Booking = model<IBooking>("Booking", BookingSchema);
+export const BookingModel = model<IBooking>("booking", BookingSchema);

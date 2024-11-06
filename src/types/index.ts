@@ -1,5 +1,7 @@
 
 export interface ResponseType<T>{
     errorMessage?:string
-    data:T| undefined
+    message?:string,
+    data:T| null
+    
 }

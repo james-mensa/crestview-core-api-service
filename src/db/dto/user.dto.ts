@@ -11,3 +11,17 @@ export const UserSchema = z.object({
 });
 
 export type UserDTO = z.infer<typeof UserSchema>;
+export const UserQuerySchema = z.object({
+  t: z.string()
+});
+export type UserQueryDTO = z.infer<typeof UserQuerySchema>;
+
+export const UserParamSchema = z.object({
+  id: z.string()
+});
+export type UserParamDTO = z.infer<typeof UserParamSchema>;
+
+export const UserAuthSchema = UserSchema.omit({
+fullname:true
+});
+export type UserAuthDTO = z.infer<typeof UserAuthSchema>;

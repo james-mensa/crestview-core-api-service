@@ -45,19 +45,22 @@ export type PaymentMethod = keyof typeof AmenitiesTypes;
 
 
   export interface IUser {
+    _id?: mongoose.Types.ObjectId; 
     fullname: string;
     alias?: string;
     email: string;
     password?: string;
     picture?: string;
-    isSocialAuth: boolean;
-    bookings?: mongoose.Types.ObjectId[];
+    isSocialAuth?: boolean;
+    booking?: mongoose.Types.ObjectId[];
     active: boolean;
     createdAt?: Date;
     updatedAt?: Date;
+    verifyPassword?: (_key:string)=>Promise<boolean>
   }
-  
 
+
+export type PaymentStatus= "pending" | "completed" |"failed"
   export interface IBooking extends Document {
     paymentMethod: PaymentMethods;
     clientId: Schema.Types.ObjectId;
@@ -66,4 +69,8 @@ export type PaymentMethod = keyof typeof AmenitiesTypes;
     checkOutDate: Date;
     ratingId?: Schema.Types.ObjectId;
     totalPrice: number;
+    taxAmount?: number;
+    discount?: number;
+    finalPrice?: number;
+    paymentStatus?: PaymentStatus;
   }

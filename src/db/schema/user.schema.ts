@@ -27,10 +27,10 @@ const userSchema =new Schema<IUser>(
         default: false
       },
   
-      bookings: [
+      booking: [
         {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "bookings",
+          ref: "booking",
         },
       ],
       active: {
@@ -38,7 +38,7 @@ const userSchema =new Schema<IUser>(
         default: true,
       },
     },
-    { timestamps: true }
+    {timestamps: true}
   );
   
   userSchema.pre("save", async function (next) {
@@ -49,9 +49,7 @@ const userSchema =new Schema<IUser>(
     }
     next();
   });
-
-
-
+  
   userSchema.methods.verifyPassword= async function(key:string){
     const user=this;
     return await bcryt.compare(key,user.password)

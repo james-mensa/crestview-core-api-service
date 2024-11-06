@@ -1,7 +1,11 @@
-const { User, Admin } = require("./user.model");
-import {suiteModel} from './schema/suite.schema'
+import { userModel } from './schema/user.schema';
+import { BookingModel } from './schema/booking.schema';
 export {
-    User as UserModel,
-    Admin as AdminModel,
-    suiteModel
+    userModel,
+    BookingModel
+}
+
+export const initializeSchemas=()=>{
+    userModel.init();
+    BookingModel.init();
 }

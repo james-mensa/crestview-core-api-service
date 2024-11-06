@@ -32,6 +32,8 @@
       "@models/*": ["src/db/schema/*"],           
       "@services/*": ["src/services/*"],
       "@type/*": ["src/types/*"],
+      "@db/*": ["src/db/*"],
+      "@utils/*": ["src/utils/*"],
     },
     "rootDir": "./src",                         
     "outDir": "./dist",                        
