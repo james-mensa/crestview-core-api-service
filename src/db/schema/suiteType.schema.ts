@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { AmenitiesTypes, ISuiteType } from '../types/schema.interface';
+import {amenitiesTypes, ISuiteType } from '../types/schema.interface';
 
 const suiteTypeSchema = new Schema<ISuiteType>({
   picture: {
@@ -41,10 +41,10 @@ const suiteTypeSchema = new Schema<ISuiteType>({
   },
   amenities: {
     type: [String],
-    enum: Object.values(AmenitiesTypes),
+    enum: Object.values(amenitiesTypes),
     required: true,
   },
   rooms: [{ type: mongoose.Schema.Types.ObjectId, ref: "Suite" }],
 });
 
-export const SuiteModel = mongoose.model<ISuiteType>("SuiteType", suiteTypeSchema);
+export const SuiteTypeModel = mongoose.model<ISuiteType>("suiteType", suiteTypeSchema);

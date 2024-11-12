@@ -6,7 +6,7 @@ import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import cookieParser  from "cookie-parser";
 import { appConfig } from './src/config/appConfig';
-import {AuthRouter, healthRouter} from "./src/routes"
+import {authRouter, healthRouter, suiteRouter} from "./src/routes"
 import { initializeSchemas } from './src/db/index';
 dotenv.config();
 
@@ -34,7 +34,8 @@ app.use(cookieParser());
 
 app.get('/', (_: Request, res: Response) =>{ res.status(200).send({message:"Crestview core service"});});
 
-app.use("/api/auth", AuthRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/suite", suiteRouter);
 app.use(healthRouter);
 // app.use("/session", query);
 // app.use("/api/auth", authService);
