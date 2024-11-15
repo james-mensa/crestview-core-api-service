@@ -36,6 +36,7 @@ class UserController {
   registerUser = async (req: Request, res: Response) => {
     const responseHandler = new ResponseHandler<IUser>(res,"User::register");
     try {
+      console.log({response:req.body})
       const data: UserDTO = UserSchema.parse(req.body);
       const existingUser = await this.crudJob.findOne({ email: data.email });
       if (existingUser?.data) {
