@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 
 
 export const SuiteTypeSchema = z.object({
-  picture: z.array(z.string()).nonempty(),
+  // images: z.array(z.string()).nonempty(),
   price: z.number().min(0),
   tax: z.number().default(0),
   name: z.string().min(1),
@@ -20,3 +20,13 @@ export const SuiteTypeSchema = z.object({
   })).optional(),
 });
 export type SuiteTypeDTOType = z.infer<typeof SuiteTypeSchema>;
+
+
+export const parseBody = (body: any) => {
+  if (body.price) body.price = Number(body.price);
+  if (body.tax) body.tax = Number(body.tax);
+
+  if (body.capacity) body.capacity = JSON.parse(body.capacity)
+  if(body.amenities) body.amenities = JSON.parse(body.amenities)  
+  return body;
+};

@@ -2,7 +2,7 @@ import mongoose, { Schema } from 'mongoose';
 import {amenitiesTypes, ISuiteType } from '../types/schema.interface';
 
 const suiteTypeSchema = new Schema<ISuiteType>({
-  picture: {
+  images: {
     type: [String],
     required: true, 
   },

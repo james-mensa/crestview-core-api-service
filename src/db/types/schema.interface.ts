@@ -22,7 +22,7 @@ export enum PaymentMethods {
 export type PaymentMethod = keyof typeof PaymentMethods;
 
   export interface ISuiteType{
-    picture: string[];
+    images: string[];
     price: number;
     tax?: number;
     name: string;

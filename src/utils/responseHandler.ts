@@ -2,6 +2,7 @@ import { ResponseType } from "@type/index";
 import { Response } from "express";
 import { HttpStatusCode } from "./httpStatusCodes";
 import { LoggerService } from "@services/logger.service";
+import clearUploadFolder from "src/middleware/cleanUpResources";
 export class ResponseHandler<T> {
   private res: Response;
   private logger: LoggerService;
@@ -19,6 +20,7 @@ export class ResponseHandler<T> {
     if (message) {
       clientResponse.message = message;
     }
+    clearUploadFolder();
     return this.res.status(status.code).json(clientResponse);
   }
 
@@ -30,6 +32,7 @@ export class ResponseHandler<T> {
     const errorMessage = error.message || (status && status.message);
     const errorCode = error.code ?? (status && status.code)
     this.logger.error(errorMessage)
+    clearUploadFolder();
     this.send({ code:errorCode, message: errorMessage }, message);
   };
 }
