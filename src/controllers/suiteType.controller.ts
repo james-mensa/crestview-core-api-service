@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import { DbCRUD } from "./crud";
+import { DbCRUD } from "../services/crud";
 import { httpStatusCodes } from "@utils/httpStatusCodes";
 import { ResponseHandler } from "@utils/responseHandler";
 import { ISuiteType } from "@db/types/schema.interface";

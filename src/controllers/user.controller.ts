@@ -8,7 +8,7 @@ import {
   UserParamDTO,
   UserAuthSchema,
 } from "src/db/dto/user.dto";
-import { DbCRUD } from "./crud";
+import { DbCRUD } from "../services/crud";
 import { userModel } from "@models/user.schema";
 import JwtService from "@services/jwt.service";
 import emailService from "@services/email.service";
