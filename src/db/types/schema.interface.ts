@@ -1,16 +1,17 @@
 import mongoose, { Document ,Schema} from "mongoose";
 
-export enum AmenitiesTypes {
-    SwimmingPool = "swimmingPool",
-    Gym = "gym",
-    Spa = "spa",
-    Shuttle = "shuttle",
-    Wifi = "wifi",
-    Breakfast = "breakfast",
-    Safe = "safe",
-    Pet = "pet",
-  }
-  export type AmenitiesType = keyof typeof AmenitiesTypes;
+export const amenitiesTypes ={
+    SwimmingPool : "swimmingPool",
+    Gym : "gym",
+    Spa : "spa",
+    Shuttle : "shuttle",
+    Wifi : "wifi",
+    Breakfast : "breakfast",
+    Safe : "safe",
+    Pet : "pet",
+  } as const
+  export type AmenitiesType =
+  (typeof amenitiesTypes)[keyof typeof amenitiesTypes];
 
 export enum PaymentMethods {
     Cash = "cash",
@@ -18,10 +19,10 @@ export enum PaymentMethods {
     MOMO= "momo",
 }
 
-export type PaymentMethod = keyof typeof AmenitiesTypes;
+export type PaymentMethod = keyof typeof PaymentMethods;
 
-  export interface ISuiteType extends Document{
-    picture: string[];
+  export interface ISuiteType{
+    images: string[];
     price: number;
     tax?: number;
     name: string;
@@ -32,8 +33,8 @@ export type PaymentMethod = keyof typeof AmenitiesTypes;
       children: number;
     };
     mattress?: string; 
-    amenities: AmenitiesType[];
-    rooms: mongoose.Types.ObjectId[];
+    amenities?: AmenitiesType[];
+    rooms?: any;
   }
   
   export interface ISuite extends Document{

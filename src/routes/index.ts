@@ -1,6 +1,8 @@
-import AuthRouter from  "./user.routes"
+import authRouter from  "./user.routes"
 import healthRouter from './health.routes';
+import suiteRouter from './suite.routes';
 export {
-    AuthRouter,
-    healthRouter
+    authRouter,
+    healthRouter,
+    suiteRouter
 }

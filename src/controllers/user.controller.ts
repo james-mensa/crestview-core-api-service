@@ -8,7 +8,7 @@ import {
   UserParamDTO,
   UserAuthSchema,
 } from "src/db/dto/user.dto";
-import { DbCRUD } from "./crud";
+import { DbCRUD } from "../services/crud";
 import { userModel } from "@models/user.schema";
 import JwtService from "@services/jwt.service";
 import emailService from "@services/email.service";
@@ -36,6 +36,7 @@ class UserController {
   registerUser = async (req: Request, res: Response) => {
     const responseHandler = new ResponseHandler<IUser>(res,"User::register");
     try {
+      console.log({response:req.body})
       const data: UserDTO = UserSchema.parse(req.body);
       const existingUser = await this.crudJob.findOne({ email: data.email });
       if (existingUser?.data) {
