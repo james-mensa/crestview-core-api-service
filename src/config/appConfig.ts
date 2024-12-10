@@ -13,7 +13,8 @@ const settings={
     baseMongoDBURL: ENV==='development' ? LOCAL_MONGODB_URL :REMOTE_MONGODB_URL,
     db_scret:process.env.DB_SECRET,
     appSecret:process.env.APP_SECRET,
-    googAuthLink:process.env.GOOGLE_AUTH_LINK
+    googAuthLink:process.env.GOOGLE_AUTH_LINK,
+    api_version: process.env.API_VERSION
 }
 
 
