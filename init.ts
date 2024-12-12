@@ -18,7 +18,7 @@ if (!fs.existsSync(uploadDir)) {
 }
 const app = express();
 const PORT = process.env.PORT || 3004;
-const allowedOrigins = ['http://localhost:3000', 'https://rixoscomfort.netlify.app'];
+const allowedOrigins = ['http://localhost:3000','http://localhost:3001', 'https://rixoscomfort.netlify.app'];
 
 // CORS configuration with callback
 const corsOptions: CorsOptions = {
@@ -37,11 +37,12 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-app.get('/api', (_: Request, res: Response) =>{ res.status(200).send({message:"Crestview core service"});});
+const SERVICE_VERSION =`/api/${appConfig.api_version}`
+app.get(SERVICE_VERSION, (_: Request, res: Response) =>{ res.status(200).send({message:"Crestview core service"});});
 
-app.use("/api/auth", authRouter);
-app.use("/api/suite", suiteRouter);
-app.use(healthRouter);
+app.use(`${SERVICE_VERSION}/auth`, authRouter);
+app.use(`${SERVICE_VERSION}/suite`, suiteRouter);
+app.use(SERVICE_VERSION,healthRouter);
 // app.use("/session", query);
 // app.use("/api/auth", authService);
 // app.use("/api/auth", tokenizedAuthService);

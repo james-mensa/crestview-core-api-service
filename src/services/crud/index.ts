@@ -114,7 +114,7 @@ export class DbCRUD<T, AddModel = T> {
    */
   removeDocument = async (
     query: Partial<T>
-  ): Promise<ResponseType<string | null>> => {
+  ): Promise<ResponseType<T | null>> => {
     try {
       const result = await this.model.findOneAndDelete(query);
       return { data: result };

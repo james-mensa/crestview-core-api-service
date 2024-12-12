@@ -35,6 +35,7 @@ export type PaymentMethod = keyof typeof PaymentMethods;
     mattress?: string; 
     amenities?: AmenitiesType[];
     rooms?: any;
+    _id?:mongoose.Types.ObjectId
   }
   
   export interface ISuite extends Document{
