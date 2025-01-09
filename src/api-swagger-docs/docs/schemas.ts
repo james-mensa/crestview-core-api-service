@@ -98,4 +98,13 @@
  *         suiteType:
  *           type: string
  *           format: uuid
+ *         meta:
+ *           type: object
+ *           properties:
+ *                  bytes:
+ *                     type: number
+ *                  mimeType:
+ *                     type: string
+ *                  publicId:
+ *                     type: string
  */
