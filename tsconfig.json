@@ -31,11 +31,14 @@
       "@controllers/*": ["src/controllers/*"], 
       "@models/*": ["src/db/schema/*"],           
       "@services/*": ["src/services/*"],
+      "@middleware/*": ["src/middleware/*"],
       "@type/*": ["src/types/*"],
       "@db/*": ["src/db/*"],
+      "@lib/*": ["src/lib/*"],
       "@utils/*": ["src/utils/*"],
+      "@api-swagger-docs":["src/api-swagger-docs"]
     },
-    "rootDir": "./src",                         
+    "rootDir": "./",                         
     "outDir": "./dist",                        
     "declaration": true,                       
 

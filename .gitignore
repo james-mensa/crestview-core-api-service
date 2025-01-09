@@ -1,2 +1,21 @@
-node_modules
+# static artifact
+node_modules/
+artifacts/
+
+# Environment variables
 .env
+.env.local
+.env.*.local
+
+# Production 
+dist/
+build/
+logs/
+# IDE settings and configs
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

@@ -7,13 +7,13 @@ import {
   UserParamSchema,
   UserParamDTO,
   UserAuthSchema,
-} from "src/db/dto/user.dto";
+} from "@db/dto/user.dto";
 import { DbCRUD } from "../services/crud";
 import { userModel } from "@models/user.schema";
 import JwtService from "@services/jwt.service";
 import emailService from "@services/email.service";
 import { IUser } from "@db/types/schema.interface";
-import { getInitials} from "src/lib/common";
+import { getInitials} from "@lib/common";
 import mongoose from "mongoose";
 import { httpStatusCodes } from "@utils/httpStatusCodes";
 import { ResponseHandler } from "@utils/responseHandler";

@@ -14,7 +14,14 @@ const settings={
     db_scret:process.env.DB_SECRET,
     appSecret:process.env.APP_SECRET,
     googAuthLink:process.env.GOOGLE_AUTH_LINK,
-    api_version: process.env.API_VERSION
+    api_version: process.env.API_VERSION,
+    host_port:process.env.HOST_PORT ?? 5000,
+    domain:ENV==='development' ? `http://localhost:${process.env.HOST_PORT ?? 5000}/api/${process.env.API_VERSION}` :process.env.SITE_DOMAIN,
+    cloudinaryForStorageEnabled: process.env.USE_CLOUDINARY_FOR_PRIMARY_ARTIFACT_STORAGE === 'true',
+    cloudinaryName: process.env.CLOUDINARY_NAME,
+    cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+    cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET
+
 }
 
 

@@ -2,7 +2,7 @@ import { ResponseType } from "@type/index";
 import { Response } from "express";
 import { HttpStatusCode } from "./httpStatusCodes";
 import { LoggerService } from "@services/logger.service";
-import clearUploadFolder from "src/middleware/cleanUpResources";
+import clearUploadFolder from "@middleware/cleanUpResources";
 export class ResponseHandler<T> {
   private res: Response;
   private logger: LoggerService;
@@ -29,7 +29,7 @@ export class ResponseHandler<T> {
     status:HttpStatusCode | null,
     message: string
   ) => {
-    const errorMessage = error.message || (status && status.message);
+    const errorMessage = error.message || error ||  (status && status.message);
     const errorCode = error.code ?? (status && status.code)
     this.logger.error(errorMessage)
     clearUploadFolder();

@@ -2,10 +2,10 @@ import mongoose, { Schema } from 'mongoose';
 import {amenitiesTypes, ISuiteType } from '../types/schema.interface';
 
 const suiteTypeSchema = new Schema<ISuiteType>({
-  images: {
-    type: [String],
-    required: true, 
-  },
+  images:[ {
+    type: mongoose.Schema.Types.ObjectId,
+    ref:'images',
+  }],
   price: {
     type: Number,
     required: true,

@@ -1,28 +1,29 @@
-// server.js
 import { CorsOptions } from 'cors';
 import express, { Request, Response } from "express";
 import  dotenv  from 'dotenv';
 import cors  from 'cors';
-import { AdminModel } from "./src/db";
-const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
-const cookieParser = require('cookie-parser');
-// const cors = require('cors');
-// const dotenv = require("dotenv");
-
-
-const authService = require("./src/routers/auth/socialAuth");
-const tokenizedAuthService = require("./src/routers/auth/tokenizedAuth");
-const health=require("./src/routers/health")
-const { AuthSession } = require("./src/middleware/auth");
-const { appConfig } = require("./src/config/appConfig");
-
+import mongoose from "mongoose";
+import bodyParser from "body-parser";
+import cookieParser  from "cookie-parser";
+import { appConfig } from './config/appConfig';
+import {authRouter, healthRouter, suiteRouter} from "./routes"
+import { initializeSchemas } from './db/index';
+import {setupSwagger} from './api-swagger-docs/swagger.setup'
+import fs from 'fs';
+import path from 'path';
 dotenv.config();
 
-
+const uploadDir = path.join(__dirname, 'artifacts');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
 const app = express();
-const PORT = process.env.PORT || 3003;
-const allowedOrigins = ['http://localhost:3000', 'https://rixoscomfort.netlify.app'];
+const PORT =appConfig.host_port;
+const allowedOrigins = ['localhost',
+  'http://localhost:3000',
+  'http://localhost:3001',
+  'https://rixoscomfort.netlify.app',
+  'http://localhost:8081'];
 
 // CORS configuration with callback
 const corsOptions: CorsOptions = {
@@ -40,13 +41,13 @@ app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(AuthSession);
 
-// Routes
-app.use(health);
-app.get('/', (_: Request, res: Response) =>{ res.status(200).send({message:"Crestview core service"});});
-app.use("/admin", AdminModel);
-// app.use("/user", users);
+const SERVICE_VERSION =`/api/${appConfig.api_version}`
+app.get(SERVICE_VERSION, (_: Request, res: Response) =>{ res.status(200).send({message:"Crestview core service"});});
+
+app.use(`${SERVICE_VERSION}/auth`, authRouter);
+app.use(`${SERVICE_VERSION}`, suiteRouter);
+app.use(SERVICE_VERSION,healthRouter);
 // app.use("/session", query);
 // app.use("/api/auth", authService);
 // app.use("/api/auth", tokenizedAuthService);
@@ -54,14 +55,18 @@ app.use("/admin", AdminModel);
 // Database Connection
 const DBconnect = async () => {
   try {
-    await mongoose.connect(appConfig.baseMongoDBURL);
+    await mongoose.connect(appConfig.baseMongoDBURL??'');
     console.log('MongoDB connected');
+    initializeSchemas();
   } catch (error) {
     console.error('Database connection error:', error);
     process.exit(1);
   }
 };
 
+app.get(`${SERVICE_VERSION}/test`, (_req:Request, res:Response) => {
+  res.send('Swagger setup is working!');
+});
 // Start server with database connection
 const startServer = async () => {
   await DBconnect();
@@ -71,6 +76,7 @@ const startServer = async () => {
       return;
     }
     console.log(`Server running on port ${PORT}`);
+    setupSwagger(app);
   });
 };
 

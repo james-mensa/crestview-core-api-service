@@ -3,7 +3,7 @@ import { Request } from 'express';
 
 const storage: StorageEngine = multer.diskStorage({
   destination: (_req: Request, _file: Express.Multer.File, cb: Function) => {
-    cb(null, 'uploads/');  
+    cb(null, 'artifacts/');  
   },
   filename: (_req: Request, file: Express.Multer.File, cb: Function) => {
     cb(null, `${Date.now()}-${file.originalname}`);  

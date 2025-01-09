@@ -3,12 +3,12 @@ import path from 'path';
 
 
 const clearUploadFolder = (): void => {
-  const uploadDir = path.join(process.cwd(), 'uploads');
+  const uploadDir = path.join(process.cwd(), 'artifacts');
 
 
   fs.readdir(uploadDir, (err, files) => {
     if (err) {
-      console.error('Error reading uploads folder:', err);
+      console.error('Error reading artifacts folder:', err);
       return;
     }
 

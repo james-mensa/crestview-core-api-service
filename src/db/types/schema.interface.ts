@@ -22,7 +22,7 @@ export enum PaymentMethods {
 export type PaymentMethod = keyof typeof PaymentMethods;
 
   export interface ISuiteType{
-    images: string[];
+    images: mongoose.Types.ObjectId[];
     price: number;
     tax?: number;
     name: string;
@@ -42,6 +42,17 @@ export type PaymentMethod = keyof typeof PaymentMethods;
     booking?: mongoose.Types.ObjectId[];
     suiteType: mongoose.Types.ObjectId;
     roomNumber: string;
+  
+  }
+  export interface ImageBodyInterface {
+    suiteType?: mongoose.Types.ObjectId;
+    file:string,
+    _id?:mongoose.Types.ObjectId
+    meta?:{
+      mimeType:string,
+      publicId:string,
+      bytes:number
+    }
   
   }
 

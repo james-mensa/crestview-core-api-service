@@ -1,6 +1,16 @@
 import { LoggerService } from "@services/logger.service";
 import { ResponseType } from "@type/index";
 
+
+/**
+ * DbCRUD Class
+ * A reusable generic database CRUD class for handling common operations on a Mongoose model.
+ * Provides methods for adding, finding, updating, and removing documents from the database.
+ *
+ * @template T - The type representing the schema of the database document.
+ * @template AddModel - The type of the data used for creating a new document (default: T).
+ */
+
 export class DbCRUD<T, AddModel = T> {
   private model: any;
   private logger: LoggerService;
@@ -17,9 +27,11 @@ export class DbCRUD<T, AddModel = T> {
 
   /**
    * Adds a new document to the database if it does not already exist.
-   * @param data - The data to add to the database.
-   * @param query - The query to check if the document already exists.
-   * @returns The added document or null if it already exists.
+   *
+   * @param data - The data for creating a new document.
+   * @param query - The query to check for the existence of the document.
+   * @param strict - If true, returns an error message when the document already exists.
+   * @returns A response containing the added document or the existing document.
    */
 
   add = async (
@@ -43,6 +55,12 @@ export class DbCRUD<T, AddModel = T> {
     }
   };
 
+  /**
+   * Finds all documents matching the given criteria.
+   *
+   * @param option - Options for populating related fields.
+   * @returns A response containing the list of documents or an empty array if none are found.
+   */
   findAll = async (option?: {
     populate: string | string[];
   }): Promise<ResponseType<T[]> | null> => {
@@ -58,6 +76,13 @@ export class DbCRUD<T, AddModel = T> {
     }
   };
 
+  /**
+   * Finds a single document matching the given query.
+   *
+   * @param query - The query for finding the document.
+   * @param option - Options for populating related fields.
+   * @returns A response containing the document or null if not found.
+   */
   findOne = async (
     query: Partial<T>,
     option?: {
@@ -78,6 +103,13 @@ export class DbCRUD<T, AddModel = T> {
     }
   };
 
+
+  /**
+   * Finds multiple documents matching the given query.
+   *
+   * @param query - The query for finding the documents.
+   * @returns A response containing the list of documents or null if an error occurs.
+   */
   find = async (query: Partial<T>): Promise<ResponseType<T[]> | null> => {
     try {
       return { data: await this.model.find(query) };
@@ -87,10 +119,11 @@ export class DbCRUD<T, AddModel = T> {
   };
 
   /**
-   * Updates a document based on a query and update data.
-   * @param query - The query to find the document to update.
+   * Updates a single document based on the query and update data.
+   *
+   * @param query - The query for finding the document to update.
    * @param update - The data to update the document with.
-   * @returns The updated document or an error message.
+   * @returns A response containing the updated document or an error message.
    */
   updateOne = async (
     query: Partial<T>,
@@ -108,9 +141,10 @@ export class DbCRUD<T, AddModel = T> {
   };
 
   /**
-   * Removes a document based on a query.
-   * @param query - The query to find the document to remove.
-   * @returns A success message or an error message.
+   * Removes a single document based on the given query.
+   *
+   * @param query - The query for finding the document to remove.
+   * @returns A response containing the removed document or an error message.
    */
   removeDocument = async (
     query: Partial<T>

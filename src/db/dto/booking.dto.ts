@@ -1,8 +1,6 @@
 import { Schema } from "mongoose";
 
-
-const PAYMENT_METHOD= ""
-const BookingSchema = new Schema(
+export const BookingSchema = new Schema(
     {
       paymentoption: {
         type: String,
