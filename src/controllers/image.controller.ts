@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { DbCRUD } from "../services/crud";
 import { httpStatusCodes } from "@utils/httpStatusCodes";
 import { ResponseHandler } from "@utils/responseHandler";
-import { ImageBodyInterface } from "@db/types/schema.interface";
+import { ImageBodyInterface } from "@db/interfaces/schema.interface";
 import { parseObjectId } from "@utils/common";
 
 import { ImageModel } from "@models/image.Schema";

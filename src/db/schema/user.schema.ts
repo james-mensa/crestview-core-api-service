@@ -2,7 +2,7 @@ import  mongoose, { Schema }  from 'mongoose';
 import bcryt from 'bcrypt';
 import jwt from  'jsonwebtoken';
 import { appConfig } from '@config/appConfig';
-import { IUser } from '../types/schema.interface';
+import { IUser } from '../interfaces/schema.interface';
 const userSchema =new Schema<IUser>(
  {
       fullname: {

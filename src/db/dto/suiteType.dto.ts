@@ -1,10 +1,9 @@
 import { z } from 'zod';
-import { AmenitiesType, amenitiesTypes } from '../types/schema.interface';
+import { AmenitiesType, amenitiesTypes } from '../interfaces/schema.interface';
 import mongoose from 'mongoose';
 
 
 export const SuiteTypeSchema = z.object({
-  // images: z.array(z.string()).nonempty(),
   price: z.number().min(0),
   tax: z.number().default(0),
   name: z.string().min(1),
@@ -18,6 +17,8 @@ export const SuiteTypeSchema = z.object({
   rooms: z.array(z.string().refine((val) => mongoose.Types.ObjectId.isValid(val), {
     message: "Invalid ObjectId format"
   })).optional(),
+  discount:z.number().optional(),
+  reservationPolicy:z.string().optional()
 });
 export type SuiteTypeDTOType = z.infer<typeof SuiteTypeSchema>;
 

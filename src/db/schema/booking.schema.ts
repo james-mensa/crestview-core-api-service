@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { IBooking, PaymentMethods } from "../types/schema.interface";
+import { IBooking, PaymentMethods } from "../interfaces/schema.interface";
 
 
 const BookingSchema = new Schema<IBooking>(

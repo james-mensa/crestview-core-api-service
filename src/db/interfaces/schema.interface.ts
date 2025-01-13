@@ -35,14 +35,31 @@ export type PaymentMethod = keyof typeof PaymentMethods;
     mattress?: string; 
     amenities?: AmenitiesType[];
     rooms?: any;
-    _id?:mongoose.Types.ObjectId
+    _id?:mongoose.Types.ObjectId;
+    discount?: number;
+    reservationPolicy?: string;
   }
-  
-  export interface ISuite extends Document{
-    booking?: mongoose.Types.ObjectId[];
-    suiteType: mongoose.Types.ObjectId;
+
+
+  export enum SuiteStatus {
+    AVAILABLE = "available",
+    OCCUPIED = "occupied",
+    RESERVED = "reserved",
+  }
+  export enum SuiteHousekeepingStatus {
+    CLEAN = "clean",
+    DIRTY = "dirty",
+    INSPECTION = "inspection",
+  }
+  export interface ISuite{
+    bookings?: mongoose.Types.ObjectId[];
+    suiteTypeId: mongoose.Types.ObjectId;
     roomNumber: string;
-  
+    status?:SuiteStatus,
+    floorNumber?: number;
+    housekeepingStatus?:SuiteHousekeepingStatus
+    tags?: string[]; 
+    _id?:mongoose.Types.ObjectId 
   }
   export interface ImageBodyInterface {
     suiteType?: mongoose.Types.ObjectId;

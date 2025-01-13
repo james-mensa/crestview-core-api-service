@@ -1,6 +1,6 @@
 
 import  mongoose, { Schema } from 'mongoose';
-import { ImageBodyInterface } from '../types/schema.interface';
+import { ImageBodyInterface } from '../interfaces/schema.interface';
 const metaSchema = new Schema({
   mimeType: { type: String, required: true },
   publicId: { type: String, required: true },

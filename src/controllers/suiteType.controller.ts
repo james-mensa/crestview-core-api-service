@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { DbCRUD } from "../services/crud";
 import { httpStatusCodes } from "@utils/httpStatusCodes";
 import { ResponseHandler } from "@utils/responseHandler";
-import { ISuiteType } from "@db/types/schema.interface";
+import { ISuiteType } from "@db/interfaces/schema.interface";
 import { base64Image, parseObjectId } from "@utils/common";
 import { SuiteTypeModel } from "@models/suiteType.schema";
 import {
@@ -80,7 +80,7 @@ class SuiteTypeController {
       "SUITE TYPE::GET ALL"
     );
     try {
-      const query = await this.crudJob.findAll({ populate: "images" });
+      const query = await this.crudJob.findAll({ populate: ["images","rooms"] });
       if (query?.data) {
         responseHandler.send(httpStatusCodes.OK, "success", query.data);
         return;
@@ -104,7 +104,7 @@ class SuiteTypeController {
         {
           _id: parseObjectId(req.params.id),
         },
-        { populate: "images" }
+        { populate: ["images","rooms"] }
       );
       if (query?.data) {
         responseHandler.send(
@@ -132,6 +132,12 @@ class SuiteTypeController {
         _id: parseObjectId(req.params.id),
       });
       if (query?.data) {
+        const images = query.data.images;
+        await Promise.all(
+          images.map(async (id) => {
+            await imageService.delete(id);
+          })
+        );
         responseHandler.send(
           httpStatusCodes.OK,
           "deleted successfully",
